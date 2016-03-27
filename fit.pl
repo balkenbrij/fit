@@ -49,11 +49,20 @@ sub add {
 #
 sub getbin {
   my $size = shift;
+  my $bestbin = undef;
+  my $bestfree = $binsize + 1;
+
   foreach my $bin (@bins) {
-    if ($size <= $bin->{free}) {
-        return $bin;
+    if ($size <= $bin->{free} && $bin->{free} < $bestfree) {
+        $bestbin = $bin;
+        $bestfree = $bin->{free};
     }
   }
+  if ($bestbin) {
+    return $bestbin;
+  }
+
+  # no fit, create a new bin
   push(@bins, { "items"    => 0,
                 "free"     => $binsize,
                 "contents" => [] });

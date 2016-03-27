@@ -63,9 +63,16 @@ class Fit:
 
   def getbin(self, size):
     "Get a bin which can hold size or create a new one"
+    bestbin = []
+    bestfree = self.binsize + 1
     for bin in self.bins:
-      if size <= bin.free:
-        return bin
+      if size <= bin.free and bin.free < bestfree:
+        bestbin = bin
+        bestfree = bin.free
+    if bestbin:
+      return bestbin
+
+    # no fit, create a new bin
     self.bins.append(Bin(self.binsize))
     self.nbins = self.nbins + 1
     return self.bins[-1]
