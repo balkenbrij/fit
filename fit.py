@@ -44,8 +44,8 @@ class Fit:
     self.files   = []
 
     self.getfiles(Path)
-    self.files.sort()
-    self.files.reverse()
+    # sort by size so large items come first (pop will take largest first)
+    self.files.sort(cmp=lambda a, b: a[1] - b[1])
     self.fit()
     self.printbins()
 

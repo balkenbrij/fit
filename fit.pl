@@ -66,7 +66,8 @@ sub getbin {
 sub getfiles {
   my $path = shift;
   find(sub{if (-f) {push(@files, [$File::Find::name, -s]);}}, $path);
-  @files = sort { $b->[0] cmp $a->[0] } @files;
+  # sort by size so large items come first (pop will take largest first)
+  @files = sort { $a->[1] - $b->[1] } @files; 
 }
 
 # -----------------------------------------------------------------------------
