@@ -59,7 +59,7 @@ class Fit:
             num_to_human(size), num_to_human(self.binsize)))
         self.files.append((fullname, size))
     # sort by size so large items come first (pop will take largest first)
-    self.files.sort(cmp=lambda a, b: a[1] - b[1])
+    self.files.sort(key=lambda item: item[1])
 
   def getbin(self, size):
     "Get a bin which can hold size or create a new one"
