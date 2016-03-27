@@ -58,9 +58,7 @@ sub getbin {
         $bestfree = $bin->{free};
     }
   }
-  if ($bestbin) {
-    return $bestbin;
-  }
+  return $bestbin if defined($bestbin);
 
   # no fit, create a new bin
   push(@bins, { "items"    => 0,
@@ -76,7 +74,7 @@ sub getfiles {
   my $path = shift;
   find(sub{if (-f) {push(@files, [$File::Find::name, -s]);}}, $path);
   # sort by size so large items come first (pop will take largest first)
-  @files = sort { $a->[1] - $b->[1] } @files; 
+  @files = sort { $a->[1] <=> $b->[1] } @files; 
 }
 
 # -----------------------------------------------------------------------------

@@ -44,8 +44,6 @@ class Fit:
     self.files   = []
 
     self.getfiles(Path)
-    # sort by size so large items come first (pop will take largest first)
-    self.files.sort(cmp=lambda a, b: a[1] - b[1])
     self.fit()
     self.printbins()
 
@@ -60,10 +58,12 @@ class Fit:
           raise ValueError("Can't fit {}({}) into {}".format(fullname, \
             num_to_human(size), num_to_human(self.binsize)))
         self.files.append((fullname, size))
+    # sort by size so large items come first (pop will take largest first)
+    self.files.sort(cmp=lambda a, b: a[1] - b[1])
 
   def getbin(self, size):
     "Get a bin which can hold size or create a new one"
-    bestbin = []
+    bestbin = None
     bestfree = self.binsize + 1
     for bin in self.bins:
       if size <= bin.free and bin.free < bestfree:
